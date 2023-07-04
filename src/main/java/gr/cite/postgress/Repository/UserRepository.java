@@ -1,5 +1,6 @@
-package gr.cite.postgress;
+package gr.cite.postgress.Repository;
 
+import gr.cite.postgress.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
