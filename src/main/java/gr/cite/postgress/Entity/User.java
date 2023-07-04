@@ -17,6 +17,15 @@ public class User {
     @Column(name="email")
     private String email;
 
+    public User(Long id, String firstName, String lastName, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public User(){}
+
     // getters and setters
 
     public Long getId() {
@@ -49,5 +58,9 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String toString() {
+        return "User [id=" + id + ", firstname=" + firstName + ", lastname=" + lastName + ", email=" + email + "]";
     }
 }
