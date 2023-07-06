@@ -1,7 +1,9 @@
 package gr.cite.postgress.Controller;
 
+import gr.cite.postgress.DTO.UserDTO;
 import gr.cite.postgress.Entity.User;
 import gr.cite.postgress.Service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -18,34 +21,42 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/")
-    public List <User> getUsers() {
-        return userService.read();
+    public List <UserDTO> getUsers() {
+        return userService.read().stream().map(user -> modelMapper.map(user,UserDTO.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity <User> getUserById(@PathVariable Long id){
+    public ResponseEntity <UserDTO> getUserById(@PathVariable Long id){
        Optional<User> user = userService.read(id);
 
        if(!user.isPresent()){
            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
        }
-        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+       UserDTO userDTO = modelMapper.map(user,UserDTO.class);
+
+       return ResponseEntity.ok().body(userDTO);
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
         userService.create(user);
 
-        return ResponseEntity.ok(user);
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        return ResponseEntity.ok(userDTO);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody User user) {
         userService.update(user, id);
 
-        return ResponseEntity.ok(user);
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        return ResponseEntity.ok(userDTO);
     }
 
     @DeleteMapping("{id}")
