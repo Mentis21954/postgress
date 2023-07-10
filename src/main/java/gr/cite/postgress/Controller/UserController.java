@@ -24,12 +24,12 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/")
+    @GetMapping("/users")
     public List <UserDTO> getUsers() {
         return userService.read().stream().map(user -> modelMapper.map(user,UserDTO.class)).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity <UserDTO> getUserById(@PathVariable Long id){
        Optional<User> user = userService.read(id);
 
@@ -41,7 +41,7 @@ public class UserController {
        return ResponseEntity.ok().body(userDTO);
     }
 
-    @PostMapping
+    @PostMapping("users/create")
     public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
         userService.create(user);
 
@@ -50,7 +50,7 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody User user) {
         userService.update(user, id);
 
@@ -59,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         userService.delete(id);
 
