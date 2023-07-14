@@ -3,18 +3,18 @@ package gr.cite.postgress.Entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "test_users")
 public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="firstname")
+    @Column
     private String firstName;
-    @Column(name="lastname")
+    @Column
     private String lastName;
-    @Column(name="email")
+    @Column
     private String email;
     @Column
     private String password;
